@@ -2,62 +2,149 @@ import './App.css';
 import sleepy from './icons/sleepy_bot.png';
 import awake from './icons/awake_bot.png';
 import happy from './icons/happy_bot.png';
+import nerd from './icons/nerd_bot.png';
+import disappointed from './icons/disappointed_bot.png';
+import clock from './icons/clock.png';
 import red from './icons/red.png';
 import blue from './icons/blue.png';
 import yellow from './icons/yellow.png';
 import pink from './icons/pink.png';
 import * as VIAM from '@viamrobotics/sdk';
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './ghosts.css'
+import styled from "styled-components";
+import Icon from "@material-ui/core/Icon";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+
+const TimerContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const TimerIcon = styled(Icon)`
+  padding: 1rem;
+  color: darkblue;
+`;
+
+const TimerBar = styled(LinearProgress)`
+  width: 100rem;
+  border-radius: 10px;
+`;
 
 function App() {
   const [robotCharacter, setRobotCharacter]: string = useState(sleepy);
-  const [message, setMessage]: string = useState();
+  const [message, setMessage]: string = useState("");
+  const [timerMinutes, setTimerMinutes]: number = useState(20);
+  const [initialTime, setInitialTime]: number = useState(null);
+  const [focusMessage, setFocusMessage]: string = useState("Focus Time!")
 
-  async function runRobot() {
-    const host = 'cleaner-main.z4c0q9m1s6.viam.cloud';
-
-    const robot = await VIAM.createRobotClient({
-      host,
-      credential: {
-        type: 'robot-location-secret',
-        payload: 'c67akhprcheo07fqfjo1gca8xn6cup0e5hias3326x2n3dio',
-      },
-      authEntity: host,
-      signalingAddress: 'https://app.viam.com:443',
-    });
-
-    console.log('Resources:');
-    console.log(await robot.resourceNames());
-  }
-
-  function handleCleanButton() {
+  function handleFocusButton() {
     setRobotCharacter(awake);
-    runRobot().catch((error) => {
-      console.error('encountered an error:', error)
-    });
-    setRobotCharacter(happy);
+    setInitialTime(timerMinutes * 60000);
+    setFocusMessage("Focusing…")
+    // setRobotCharacter(happy);
   }
+
+  function resetTime() {
+    setRobotCharacter(sleepy);
+    setInitialTime(null);
+    setFocusMessage("Focus Time!")
+    setResults("")
+  }
+
+  const [progress, setProgress] = useState(initialTime);
+  const [results, setResults] = useState("");
+  const time_to_subtract = 1000;
+  const tickFrequency = 1000;
+  const timeLeft = initialTime;
+  const timerIcon = "⌛"
+
+  useEffect(() => {
+    if (progress === 0) {
+      let mockedAPIResult = 90;
+      if (mockedAPIResult > 80) {
+        setResults(`You have been focused ${mockedAPIResult}% of the time. Good job!`)
+        setRobotCharacter(happy)
+      } else {
+        setResults(`You have been focused ${mockedAPIResult}% of the time. Try harder! >:(`)
+        setRobotCharacter(disappointed)
+      }
+
+      setFocusMessage("Focus Time!")
+      return;
+    }
+
+    const progress_timer = setTimeout(() => {
+      if (progress > 0) {
+        setProgress((progress) => progress - time_to_subtract);
+      }
+      console.log(progress);
+    }, tickFrequency);
+    return () => {
+      clearInterval(progress_timer);
+    };
+  }, [progress]);
+
+  useEffect(() => {
+    if (!timeLeft || timeLeft > initialTime) return;
+    setProgress(timeLeft);
+  }, [timeLeft]);
+
+  const formatMillisToPercentage = (milliseconds) => {
+    return Math.floor((milliseconds / initialTime) * 100);
+  };
 
   return (
     <>
-      <div className="website-title">. . . R2-Bin2 . . .</div>
+      <div className="website-title">. . Study BUDD-E . .</div>
       <div className="robot-container">
+        <div className="progressbar-container">
+          <TimerContainer>
+            <TimerIcon>{timerIcon}</TimerIcon>
+            <TimerBar
+              variant="determinate"
+              value={formatMillisToPercentage(progress)}
+            />
+          </TimerContainer>
+          <div className="results">{results}</div>
+        </div>
         <div className="robot-character">
           <img className="robot-img" src={robotCharacter} alt="Robot"/>
         </div>
-        <div className="button clean-button" onClick={handleCleanButton}>Clean Up</div>
+        <div className="time-wrapper">
+          <div className="minutes-wrapper">
+            <div className="minus" onClick={() => {
+              setTimerMinutes(Math.max(timerMinutes - 5, 0.5));
+              resetTime();
+            }}>-
+            </div>
+            <div className="minutes-value">{timerMinutes}</div>
+            <div className="plus" onClick={() => {
+              setTimerMinutes(Math.ceil(timerMinutes / 5) * 5 + 5);
+              resetTime();
+            }}>+
+            </div>
+          </div>
+          <div className="spacer-m"/>
+          <div className="button focus-button" onClick={handleFocusButton}>{focusMessage}</div>
+        </div>
       </div>
-      <div className="spacer"></div>
+      <div className="spacer-l"></div>
       <div className="ghost-container">
-        <img src={red} className="ghost red-ghost" alt="Red ghost" onMouseOver={() => setMessage("Robo-clean, eco-green!")}/>
-        <img src={blue} className="ghost blue-ghost" alt="Blue ghost" onMouseOver={() => setMessage("Cleaning up the galaxy, one can at a time!")}/>
-        <img src={pink} className="ghost pink-ghost" alt="Pink ghost" onMouseOver={() => setMessage("Trash talk? We prefer trash collection!")}/>
-        <img src={yellow} className="ghost yellow-ghost" alt="Yellow ghost" onMouseOver={() => setMessage("Bin it to win it!")}/>
+        <img src={red} className="ghost red-ghost" alt="Red ghost" onMouseOver={() => setMessage("You can do it!")}/>
+        <img src={blue} className="ghost blue-ghost" alt="Blue ghost"
+             onMouseOver={() => setMessage("Attention Pays!")}/>
+        <img src={pink} className="ghost pink-ghost" alt="Pink ghost" onMouseOver={() => setMessage("Focus and Win!")}/>
+        <img src={yellow} className="ghost yellow-ghost" alt="Yellow ghost"
+             onMouseOver={() => setMessage("Let's goooooo!")}/>
       </div>
       <div className="message">{message}</div>
     </>
-  );
+  )
+    ;
 }
 
 export default App;

@@ -10,8 +10,12 @@ body, html {
     color: #fff;
 }
 
-.spacer {
+.spacer-l {
     margin: 48px;
+}
+
+.spacer-m {
+    margin: 0 32px 0 32px;
 }
 
 .website-title {
@@ -23,8 +27,13 @@ body, html {
 .robot-container {
     text-align: center;
     border: dashed 8px;
-    padding: 84px;
+    padding: 48px;
     margin: 0 15% 0 15%;
+    background: rgb(0, 0, 0, 0.3);
+}
+
+.results {
+    color: black;
 }
 
 .button {
@@ -44,10 +53,50 @@ body, html {
     top: 1px;
 }
 
-.clean-button {
-    padding: 12px;
-    margin-top: 42px;
+.focus-button {
+    padding: 14px;
     font-size: 20px;
+    display: inline-block;
+}
+
+.minutes-wrapper {
+    display: flex;
+    width: 90px;
+}
+
+.plus, .minus {
+    border: dashed 4px;
+    padding: 12px 0 12px 0;
+    font-size: 20px;
+    background: rgb(255 255 255 / 20%);
+    height: 24px;
+    &:hover {
+        background-color: rgb(0 0 0 / 20%);
+        cursor: pointer;
+    }
+}
+
+.minutes-value {
+    min-width: 56px;
+    font-size: 20px;
+    padding: 12px;
+    border-top: dashed 4px;
+    border-bottom: dashed 4px;
+    background: rgb(255 255 255 / 30%);
+}
+
+.time-wrapper {
+    margin-top: 42px;
+    display: flex;
+    place-items: center;
+    justify-content: center;
+}
+
+.progressbar-container {
+    background: white;
+    border-radius: 8px;
+    padding-right: 16px;
+    margin: 8px 0 24px 0;
 }
 
 .add-button {
@@ -61,10 +110,7 @@ body, html {
 
 .robot-img {
     height: 100px;
-    filter: drop-shadow(2px 2px 0 white)
-    drop-shadow(-2px 2px 0 white)
-    drop-shadow(2px -2px 0 white)
-    drop-shadow(-2px -2px 0 white);
+    filter: drop-shadow(2px 2px 0 white) drop-shadow(-2px 2px 0 white) drop-shadow(2px -2px 0 white) drop-shadow(-2px -2px 0 white);
 }
 
 .message {
