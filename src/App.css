@@ -1,38 +1,42 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('./fonts/PressStart2P-Regular.ttf') format('truetype');
+}
+
+body, html {
+    margin: 0;
+    padding: 24px;
+    background: #03041c;
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+}
+
 .App {
-  text-align: center;
+    text-align: center;
+    border: dashed 8px;
+    padding: 84px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.clean-button {
+    background-color: #ef54cf;
+    border: dashed 3px;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8.9px 14px;
+    margin: 10px 7px 0 7px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.clean-button:hover {
+    background-color: #9149ec;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.clean-button:active {
+    position: relative;
+    top: 1px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.robot-character {
+    font-size: 68px;
 }
