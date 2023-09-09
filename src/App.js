@@ -12,6 +12,7 @@ import './ghosts.css'
 
 function App() {
   const [robotCharacter, setRobotCharacter]: string = useState(sleepy);
+  const [message, setMessage]: string = useState();
 
   async function runRobot() {
     const host = 'cleaner-main.z4c0q9m1s6.viam.cloud';
@@ -40,20 +41,21 @@ function App() {
 
   return (
     <>
-      <div className="website-title">. . . Reward-E . . .</div>
+      <div className="website-title">. . . R2-Bin2 . . .</div>
       <div className="robot-container">
         <div className="robot-character">
-          <img height="100px" src={robotCharacter} alt="Robot"/>
+          <img className="robot-img" src={robotCharacter} alt="Robot"/>
         </div>
-        <div className="button focus-button" onClick={handleCleanButton}>Focus Time</div>
+        <div className="button clean-button" onClick={handleCleanButton}>Clean Up</div>
       </div>
       <div className="spacer"></div>
       <div className="ghost-container">
-        <img src={red} className="ghost red-ghost" alt="Red ghost"/>
-        <img src={blue} className="ghost blue-ghost" alt="Blue ghost"/>
-        <img src={pink} className="ghost pink-ghost" alt="Pink ghost"/>
-        <img src={yellow} className="ghost yellow-ghost" alt="Yellow ghost"/>
+        <img src={red} className="ghost red-ghost" alt="Red ghost" onMouseOver={() => setMessage("Robo-clean, eco-green!")}/>
+        <img src={blue} className="ghost blue-ghost" alt="Blue ghost" onMouseOver={() => setMessage("Cleaning up the galaxy, one can at a time!")}/>
+        <img src={pink} className="ghost pink-ghost" alt="Pink ghost" onMouseOver={() => setMessage("Trash talk? We prefer trash collection!")}/>
+        <img src={yellow} className="ghost yellow-ghost" alt="Yellow ghost" onMouseOver={() => setMessage("Bin it to win it!")}/>
       </div>
+      <div className="message">{message}</div>
     </>
   );
 }
