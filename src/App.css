@@ -5,36 +5,54 @@
 
 body, html {
     margin: 0;
-    padding: 24px;
-    background: #03041c;
+    padding: 12px;
     font-family: 'Press Start 2P', cursive;
     color: #fff;
 }
 
-.App {
+.spacer {
+    margin: 48px;
+}
+
+.website-title {
+    text-align: center;
+    line-height: 72px;
+    font-size: 32px;
+}
+
+.robot-container {
     text-align: center;
     border: dashed 8px;
     padding: 84px;
+    margin: 0 15% 0 15%;
 }
 
-.clean-button {
+.button {
     background-color: #ef54cf;
     border: dashed 3px;
     display: inline-block;
     cursor: pointer;
-    font-size: 20px;
     font-weight: bold;
-    padding: 8.9px 14px;
-    margin: 10px 7px 0 7px;
 }
 
-.clean-button:hover {
+.button:hover {
     background-color: #9149ec;
 }
 
-.clean-button:active {
+.button:active {
     position: relative;
     top: 1px;
+}
+
+.focus-button {
+    padding: 12px;
+    margin-top: 14px;
+    font-size: 20px;
+}
+
+.add-button {
+    padding: 4px;
+    font-size: 12px;
 }
 
 .robot-character {
