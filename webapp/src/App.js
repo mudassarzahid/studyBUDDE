@@ -73,14 +73,14 @@ function App() {
   const fetchData = () => {
     axios.get('http://localhost:3003/get_json', { timeout: 5000 })
       .then((res) => {
-        console.log(res.data)
-        if (res.data.json === undefined) {
+        if (res.data.__focused === undefined) {
+          console.log(res)
           setTimeout(fetchData, 1000);
           return
         }
-        const mockedAPIResult = 90;
-        if (mockedAPIResult > 80) {
-          setResults(`You have been focused ${mockedAPIResult}% of the time. Good job!`);
+        console.log(res.data.__focused)
+        if (res.data.__focused === "true" || res.data.__focused === true) {
+          setResults(`You have been focused ${res.data.__highest}% of the time. Good job!`);
           setRobotCharacter(happy);
           axios.post(`http://localhost:3003/send_result`, {"result": 1}, {timeout: 5000})
             .then(
@@ -91,7 +91,7 @@ function App() {
               console.log(error);
             });
         } else {
-          setResults(`You have been focused ${mockedAPIResult}% of the time. Try harder! >:(`);
+          setResults(`You have been focused ${res.data.__highest}% of the time. Try harder! >:(`);
           setRobotCharacter(disappointed);
           axios.post(`http://localhost:3003/send_result`, {"duration": 0}, {timeout: 5000})
             .then(
@@ -156,7 +156,7 @@ function App() {
         <div className="time-wrapper">
           <div className="minutes-wrapper">
             <div className="minus" onClick={() => {
-              setTimerMinutes(Math.max(timerMinutes - 5, 0.3));
+              setTimerMinutes(Math.max(timerMinutes - 5, 0.1));
               resetTime();
             }}>-
             </div>
