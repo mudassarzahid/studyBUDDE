@@ -5,9 +5,10 @@
 
 body, html {
     margin: 0;
-    padding: 12px;
+    padding: 24px;
     font-family: 'Press Start 2P', cursive;
     color: #fff;
+    text-shadow: 1px 1px 2px black;
 }
 
 .spacer-l {
@@ -116,4 +117,14 @@ body, html {
 .message {
     text-align: center;
     padding: 12px;
+}
+
+.MuiLinearProgress-colorPrimary {
+    height: 8px !important;
+    background-color: #ff42f0 !important;
+}
+
+.MuiLinearProgress-barColorPrimary {
+    height: 8px !important;
+    background-color: #832684 !important;
 }

@@ -1,14 +1,14 @@
 import './App.css';
-import sleepy from './icons/sleepy_bot.png';
-import awake from './icons/awake_bot.png';
-import happy from './icons/happy_bot.png';
-import nerd from './icons/nerd_bot.png';
-import disappointed from './icons/disappointed_bot.png';
-import clock from './icons/clock.png';
-import red from './icons/red.png';
-import blue from './icons/blue.png';
-import yellow from './icons/yellow.png';
-import pink from './icons/pink.png';
+import sleepy from './images/sleepy_bot.png';
+import awake from './images/awake_bot.png';
+import happy from './images/happy_bot.png';
+import nerd from './images/nerd_bot.png';
+import disappointed from './images/disappointed_bot.png';
+import clock from './images/clock.png';
+import red from './images/red.png';
+import blue from './images/blue.png';
+import yellow from './images/yellow.png';
+import pink from './images/pink.png';
 import * as VIAM from '@viamrobotics/sdk';
 import React, {useEffect, useState} from "react";
 import './ghosts.css'
@@ -36,7 +36,7 @@ const TimerBar = styled(LinearProgress)`
 
 function App() {
   const [robotCharacter, setRobotCharacter]: string = useState(sleepy);
-  const [message, setMessage]: string = useState("");
+  const [message, setMessage]: string = useState("How good is your concentration?");
   const [timerMinutes, setTimerMinutes]: number = useState(20);
   const [initialTime, setInitialTime]: number = useState(null);
   const [focusMessage, setFocusMessage]: string = useState("Focus Time!")
@@ -139,7 +139,7 @@ function App() {
              onMouseOver={() => setMessage("Attention Pays!")}/>
         <img src={pink} className="ghost pink-ghost" alt="Pink ghost" onMouseOver={() => setMessage("Focus and Win!")}/>
         <img src={yellow} className="ghost yellow-ghost" alt="Yellow ghost"
-             onMouseOver={() => setMessage("Let's goooooo!")}/>
+             onMouseOver={() => setMessage("Let's goooooo! :)")}/>
       </div>
       <div className="message">{message}</div>
     </>
