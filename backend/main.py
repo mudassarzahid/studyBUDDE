@@ -7,8 +7,10 @@ import json
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 time_data = []
 json_data = []
+result_data = []
 
 
 @app.route('/send_json', methods=['POST'])
@@ -35,6 +37,18 @@ def send_duration():
     return "{}"
 
 
+@app.route('/send_result', methods=['POST'])
+def send_duration():
+    result_data.append(
+        {
+            "duration": json.loads(request.data.decode().replace("'", '"')).get("result"),
+            "created_at": str(datetime.datetime.now())
+        }
+    )
+
+    return "{}"
+
+
 @app.route('/get_duration', methods=['GET'])
 def get_duration():
     if time_data:
@@ -50,6 +64,16 @@ def get_json():
     if json_data:
         return jsonify(
             json_data[-1]
+        )
+    else:
+        return "{}"
+
+
+@app.route('/get_result', methods=['GET'])
+def get_json():
+    if result_data:
+        return jsonify(
+            result_data[-1]
         )
     else:
         return "{}"
