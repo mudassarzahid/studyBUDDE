@@ -10,9 +10,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 time_data = []
-json_data = [{
-  "json": "[[('stand', 0.9581367373466492)]]\n[[('stand', 0.952012300491333)]]\n[[('stand', 0.9443145990371704)]]\n[[('stand', 0.8820536732673645)]]\n[[('stand', 0.7614586353302002)]]\n[[('stand', 0.820618748664856)]]\n"
-}]
+json_data = []
 result_data = []
 
 
@@ -96,8 +94,10 @@ def get_json():
         if percentage > 0.7:
             focused = True
 
-    count["__focused"] = focused
-    count["__highest"] = list(count.values())[0]
+    count["meta"] = {
+        "focused": focused
+    }
+    count["meta"]["highest"] = list(count.values())[0]
 
     return jsonify(count)
 

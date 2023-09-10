@@ -65,22 +65,23 @@ function App() {
 
   const [progress, setProgress] = useState(initialTime);
   const [results, setResults] = useState("");
+  const [resultDetails, setResultDetails] = useState("");
   const time_to_subtract = 1000;
   const tickFrequency = 1000;
   const timeLeft = initialTime;
   const timerIcon = "⌛"
 
   const fetchData = () => {
-    axios.get('http://localhost:3003/get_json', { timeout: 5000 })
+    axios.get('http://localhost:3003/get_json', {timeout: 5000})
       .then((res) => {
-        if (res.data.__focused === undefined) {
+        if (res.data.meta.highest === undefined) {
           console.log(res)
           setTimeout(fetchData, 1000);
           return
         }
-        console.log(res.data.__focused)
-        if (res.data.__focused === "true" || res.data.__focused === true) {
-          setResults(`You have been focused ${res.data.__highest}% of the time. Good job!`);
+        console.log(res.data)
+        if (res.data.meta.focused === "true" || res.data.meta.focused === true) {
+          setResults(`You have been focused ${res.data.meta.highest}% of the time. Good job!`);
           setRobotCharacter(happy);
           axios.post(`http://localhost:3003/send_result`, {"result": 1}, {timeout: 5000})
             .then(
@@ -91,7 +92,7 @@ function App() {
               console.log(error);
             });
         } else {
-          setResults(`You have been focused ${res.data.__highest}% of the time. Try harder! >:(`);
+          setResults(`You have been focused ${res.data.meta.highest}% of the time. Try harder! >:(`);
           setRobotCharacter(disappointed);
           axios.post(`http://localhost:3003/send_result`, {"duration": 0}, {timeout: 5000})
             .then(
@@ -148,7 +149,10 @@ function App() {
               variant="determinate"
               value={formatMillisToPercentage(progress)}
             />
-          </TimerContainer> : <div>{results}</div>}
+          </TimerContainer> : <>
+            <div>{results}</div>
+            <div>{resultDetails}</div>
+          </>}
         </div>
         <div className="robot-character">
           <img className="robot-img" src={robotCharacter} alt="Robot"/>
