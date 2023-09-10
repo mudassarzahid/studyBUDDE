@@ -2,6 +2,7 @@ import './App.css';
 import sleepy from './images/sleepy_bot.png';
 import awake from './images/awake_bot.png';
 import happy from './images/happy_bot.png';
+import axios from 'axios';
 import nerd from './images/nerd_bot.png';
 import disappointed from './images/disappointed_bot.png';
 import clock from './images/clock.png';
@@ -45,7 +46,14 @@ function App() {
     setRobotCharacter(awake);
     setInitialTime(timerMinutes * 60000);
     setFocusMessage("Focusing…")
-    // setRobotCharacter(happy);
+    axios.post(`http://localhost:3003/send_duration`, {"duration": timerMinutes * 60}, {timeout: 5000})
+      .then(
+        res => {
+          console.log(res)
+        })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   function resetTime() {
@@ -64,14 +72,21 @@ function App() {
 
   useEffect(() => {
     if (progress === 0) {
-      let mockedAPIResult = 90;
-      if (mockedAPIResult > 80) {
-        setResults(`You have been focused ${mockedAPIResult}% of the time. Good job!`)
-        setRobotCharacter(happy)
-      } else {
-        setResults(`You have been focused ${mockedAPIResult}% of the time. Try harder! >:(`)
-        setRobotCharacter(disappointed)
-      }
+      axios.get(`http://localhost:3003/get_json`, {timeout: 5000})
+        .then(
+          res => {
+            let mockedAPIResult = 90;
+            if (mockedAPIResult > 80) {
+              setResults(`You have been focused ${mockedAPIResult}% of the time. Good job!`)
+              setRobotCharacter(happy)
+            } else {
+              setResults(`You have been focused ${mockedAPIResult}% of the time. Try harder! >:(`)
+              setRobotCharacter(disappointed)
+            }
+          })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       setFocusMessage("Focus Time!")
       return;
@@ -81,7 +96,6 @@ function App() {
       if (progress > 0) {
         setProgress((progress) => progress - time_to_subtract);
       }
-      console.log(progress);
     }, tickFrequency);
     return () => {
       clearInterval(progress_timer);
@@ -102,14 +116,13 @@ function App() {
       <div className="website-title">. . Study BUDD-E . .</div>
       <div className="robot-container">
         <div className="progressbar-container">
-          <TimerContainer>
+          {results === "" ? <TimerContainer>
             <TimerIcon>{timerIcon}</TimerIcon>
             <TimerBar
               variant="determinate"
               value={formatMillisToPercentage(progress)}
             />
-          </TimerContainer>
-          <div className="results">{results}</div>
+          </TimerContainer> : <div>{results}</div>}
         </div>
         <div className="robot-character">
           <img className="robot-img" src={robotCharacter} alt="Robot"/>
